@@ -1,11 +1,17 @@
 #include <iostream>
-#include <string>
+#include <cstring>
 using namespace std;
 class Airport{
     private:
-        int airportID;
+        int AirportID;
     protected:
-        string airportName;
-        string city;
-        string country;
+        string AirportName;
+        string City;
+        string Country;
+
+    public:
+        void addAirport();
+        void deleteAirport();
+
+
 };
