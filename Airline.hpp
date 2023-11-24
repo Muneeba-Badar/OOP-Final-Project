@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
-class Airport{
+class Airline
+{
     private:
         int airlineID;
     protected:
