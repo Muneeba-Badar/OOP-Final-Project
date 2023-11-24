@@ -10,4 +10,8 @@ class Airport{
         string email;
         string HQcity;
         string HQcountry;
+    public:
+        void addAirline();
+        void deleteAirline();
+        void editAirline();
 };
