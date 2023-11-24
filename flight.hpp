@@ -14,6 +14,10 @@ class flight{
     bool isDomestic;
     private:
     int flightId;
+    public:
+    void addFlight();
+    void deleteFlight();
+    void editFlight();
 
 
 
