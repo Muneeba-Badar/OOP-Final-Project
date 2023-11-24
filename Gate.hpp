@@ -6,5 +6,8 @@ class Gate{
     int gateId;
     protected:
     int gateNumber;
+    public:
+    void addGate();
+    void deleteGate();
 
 };
