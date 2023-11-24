@@ -6,6 +6,9 @@ class terminal{
     int terminalId;
     protected:
     int terminalNumber;
+    public:
+    void addTerminal();
+    void deleteTerminal();
 
 
 };
