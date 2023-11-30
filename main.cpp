@@ -1,9 +1,14 @@
 #include "Airport.hpp"
+#include "Runway.hpp"
 #include <iostream>
 #include <map>
 using namespace std;
 
 int main() {
+    cout<<"What do you want to use:\n 1. Airport\n 2.Ruway\n";
+    int choice1;
+    cin>>choice1;
+    if(choice1==1){
     std::map<int, Airport> airportMapping;
     Airport airport;
 
@@ -29,7 +34,30 @@ int main() {
             break;
         }
      }
+    }
+    else if(choice1==2){
+            Runway runway;
+            std::map<int, Runway> Runwaymapping;
+            cout<<"What do you want to do?\n";
+            cout<<"\n Menu: \n 1- Add Runway \n 2- Delete Runway\n";
+            int runwayChoice;
+            cin>>runwayChoice;
+            if(runwayChoice==1){
+                runway.addRunway(Runwaymapping);
+                
+            }
+            else if(runwayChoice==2){
+                runway.deleteRunway(Runwaymapping);
+            }
 
-    return 0;
+
+
+
+
+    }
+     return 0;
 }
+   
+
+
 
