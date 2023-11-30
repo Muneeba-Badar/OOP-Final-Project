@@ -1,6 +1,7 @@
 #include "Airport.hpp"
 #include "Runway.hpp"
 #include "Terminal.hpp"
+#include "Flight.hpp"
 #include <iostream>
 #include <map>
 using namespace std;
@@ -73,6 +74,38 @@ int main() {
             }
 
 
+    }
+    if(choice1==4){
+    std::map<int, flight> flightmapping;
+
+    flight flight1;
+
+    int choice;
+     while (choice != 3)
+     {
+        std::cout << "\nMenu:\n1. Add Flight\n2. Delete Flight\n3. Edit Flight\n Exit\n";
+        std::cout << "Enter your choice: ";
+        std::cin >> choice;
+
+        switch (choice) {
+        case 1:
+            flight1.addFlight(flightmapping);
+            break;
+        case 2:
+            flight1.deleteFlight(flightmapping);
+            break;
+        case 3:
+            flight1.editFlight(flightmapping);
+            break;
+        case 4:
+            std::cout << "Exiting program." << std::endl;
+            break;
+
+        default:
+            std::cout << "Invalid choice. Please enter a valid option." << std::endl;
+            break;
+        }
+     }
     }
      return 0;
 }
