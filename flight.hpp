@@ -1,6 +1,8 @@
 #include<iostream>
 #include<cstring>
-#include <Airport.hpp>
+#include<map>
+using namespace std;
+
 
 class flight{
     //- private 
@@ -16,11 +18,15 @@ class flight{
     bool isDomestic;
     private:
     int flightId;
+    int static autoIncFlightId;
     public:
-    void addFlight();
-    void deleteFlight();
-    void editFlight();
+    void addFlight(std::map<int, flight> & flightmapping);
+    void deleteFlight(std::map<int, flight> & flightmapping);
+    void editFlight(std::map<int, flight> & flightmapping);
+    int generateFlightID();
 
 
 
 };
+
+
