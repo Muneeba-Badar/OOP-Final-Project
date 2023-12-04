@@ -13,7 +13,6 @@ class flight{
     string time;
     string from_airport;
     string to_airport;
-    string flightNumber;
     string flightType;
     bool isDomestic;
     private:
