@@ -3,7 +3,7 @@
 #include <map>
 using namespace std;
 
-int terminal::autoIncTerminalId = 0;
+int autoIncTerminalId = 0;
 int terminal::generateTerminalId() {
     return autoIncTerminalId++;
 }

@@ -5,10 +5,11 @@
 #include "Airline.hpp"
 #include <iostream>
 #include <map>
+#include "Pilot.hpp"
 using namespace std;
 
 int main() {
-    cout<<"What do you want to use:\n 1. Airport\n 2.Runway\n 3. Terminal\n 4. Flight \n 5. Airline\n";
+    cout<<"What do you want to use:\n 1. Airport\n 2.Runway\n 3. Terminal\n 4. Flight \n 5. Airline\n 6. Pilot";
     int choice1;
     cin>>choice1;
     if(choice1==1){
@@ -82,8 +83,8 @@ int main() {
     flight flight1;
 
     int choice;
-     while (choice != 3)
-     {
+    while (choice != 3)
+    {
         std::cout << "\nMenu:\n1. Add Flight\n2. Delete Flight\n3. Edit Flight\n Exit\n";
         std::cout << "Enter your choice: ";
         std::cin >> choice;
@@ -96,9 +97,6 @@ int main() {
             flight1.deleteFlight(flightmapping);
             break;
         case 3:
-            flight1.editFlight(flightmapping);
-            break;
-        case 4:
             std::cout << "Exiting program." << std::endl;
             break;
 
@@ -106,7 +104,7 @@ int main() {
             std::cout << "Invalid choice. Please enter a valid option." << std::endl;
             break;
         }
-     }
+    }
     }
     if(choice1==5){
     
@@ -126,13 +124,9 @@ int main() {
             a1.addAirline(airlineMapping);
             break;
         case 2:
-            a1.editAirline(airlineMapping);
-            break;
-        case 3:
             a1.printAllAirlines(airlineMapping);
             break;
-        
-        case 4:
+        case 3:
             cout << "Exiting program." << endl;
             break;
         default:
@@ -141,7 +135,37 @@ int main() {
         }
 
     } while (choice != 3);
-    // a1.printAllAirlines(airlineMapping);
+    }
+
+    if(choice1==6){
+    
+    std::map<int, Pilot> pilotMapping;
+    Pilot p1;
+
+    int choice;
+    do
+    {
+        cout << "\nMenu:\n1. Add Pilot\n2. Edit Pilot\n3. Print all the added Pilots: \n1 4-Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+            p1.addPilot(pilotMapping);
+            break;
+        case 2:
+            p1.printAllPilots(pilotMapping);
+            break;
+        case 3:
+            cout << "Exiting program." << endl;
+            break;
+        default:
+            cout << "Invalid choice. Please enter a valid option." << endl;
+            break;
+        }
+
+    } while (choice != 3);
     }
      return 0;
 }
