@@ -1,5 +1,3 @@
-#ifndef AIRLINE_HPP
-#define AIRLINE_HPP
 
 #include <iostream>
 #include <map>
@@ -15,6 +13,7 @@ private:
     std::string email;
     std::string HQcity;
     std::string HQcountry;
+    
 
 public:
     int generateId();
@@ -22,5 +21,4 @@ public:
     void editAirline(std::map<int, Airline> &airlineMapping);
     void printAllAirlines(std::map<int, Airline> &airlineMapping);
 };
-
 
