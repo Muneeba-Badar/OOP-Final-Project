@@ -1,17 +1,24 @@
 #include <iostream>
 #include <cstring>
+#include <map>
 using namespace std;
 class Airport{
     private:
-        int AirportID;
+        int  AirportID;
+        static int autoIncAirportId;
+
+
     protected:
         string AirportName;
-        string City;
         string Country;
+        string City;
+        
 
     public:
-        void addAirport();
-        void deleteAirport();
+        void addAirport(std::map<int, Airport> & airportMapping);
+        void deleteAirport(std::map<int, Airport> &airportMapping);
+        int generateAirportID();
 
 
 };
+
