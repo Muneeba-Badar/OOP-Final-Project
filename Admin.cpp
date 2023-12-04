@@ -13,7 +13,7 @@ virtual void addManager(std::map<int, Manager> &ManagerMapping){
     cin >> password;
     ManagerMapping[Username] = *this;
 
-    cout << "Manager Infor added successfully. Username: " << Username << endl;
+    cout << "Manager Info added successfully. Username: " << Username << endl;
 
 };
 virtual void deleteManager(std::map<int, Manager> &ManagerMapping){
