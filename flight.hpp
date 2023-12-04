@@ -22,7 +22,6 @@ class flight{
     public:
     void addFlight(std::map<int, flight> & flightmapping);
     void deleteFlight(std::map<int, flight> & flightmapping);
-    void editFlight(std::map<int, flight> & flightmapping);
     int generateFlightID();
 
 
