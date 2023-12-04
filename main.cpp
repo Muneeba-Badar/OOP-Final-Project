@@ -2,12 +2,13 @@
 #include "Runway.hpp"
 #include "Terminal.hpp"
 #include "Flight.hpp"
+#include "Airline.hpp"
 #include <iostream>
 #include <map>
 using namespace std;
 
 int main() {
-    cout<<"What do you want to use:\n 1. Airport\n 2.Runway\n 3. Terminal\n";
+    cout<<"What do you want to use:\n 1. Airport\n 2.Runway\n 3. Terminal\n 4. Flight \n 5. Airline\n";
     int choice1;
     cin>>choice1;
     if(choice1==1){
@@ -107,9 +108,43 @@ int main() {
         }
      }
     }
+    if(choice1==5){
+    
+    std::map<int, Airline> airlineMapping;
+    Airline a1;
+
+    int choice;
+    do
+    {
+        cout << "\nMenu:\n1. Add Airline\n2. Edit Airline\n3. Print all the added airlines: \n1 4-Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+            a1.addAirline(airlineMapping);
+            break;
+        case 2:
+            a1.editAirline(airlineMapping);
+            break;
+        case 3:
+            a1.printAllAirlines(airlineMapping);
+            break;
+        
+        case 4:
+            cout << "Exiting program." << endl;
+            break;
+        default:
+            cout << "Invalid choice. Please enter a valid option." << endl;
+            break;
+        }
+
+    } while (choice != 3);
+    // a1.printAllAirlines(airlineMapping);
+    }
      return 0;
 }
    
-
 
 
