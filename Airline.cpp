@@ -1,13 +1,16 @@
-#include "Airline.hpp"
+
 #include <iostream>
 #include <map>
+#include "Airline.hpp"
+using namespace std;
 
-    int generateId()
+int Airline::autoIncId = 0;
+
+int Airline:: generateId()
     {
         return autoIncId++;
     }
 
-int Airline::autoIncId = 0;
 
 void Airline::addAirline(std::map<int, Airline> &airlineMapping)
 {
@@ -119,41 +122,4 @@ void Airline::printAllAirlines(std::map<int, Airline> &airlineMapping)
              << "HQ City: " << airline.HQcity << "\n"
              << "HQ Country: " << airline.HQcountry << "\n\n";
     }
-}
-
-int main()
-{
-    std::map<int, Airline> airlineMapping;
-    Airline a1;
-
-    int choice;
-    do
-    {
-        cout << "\nMenu:\n1. Add Airline\n2. Edit Airline\n3. Print all the added airlines: \n1 4-Exit\n";
-        cout << "Enter your choice: ";
-        cin >> choice;
-
-        switch (choice)
-        {
-        case 1:
-            a1.addAirline(airlineMapping);
-            break;
-        case 2:
-            a1.editAirline(airlineMapping);
-            break;
-        case 3:
-            a1.printAllAirlines(airlineMapping);
-        
-        case 4:
-            cout << "Exiting program." << endl;
-            break;
-        default:
-            cout << "Invalid choice. Please enter a valid option." << endl;
-            break;
-        }
-
-    } while (choice != 3);
-    // a1.printAllAirlines(airlineMapping);
-
-    return 0;
 }
