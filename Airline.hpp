@@ -18,7 +18,7 @@ private:
 public:
     int generateId();
     void addAirline(std::map<int, Airline> &airlineMapping);
-    void editAirline(std::map<int, Airline> &airlineMapping);
+  
     void printAllAirlines(std::map<int, Airline> &airlineMapping);
 };
 
