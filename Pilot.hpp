@@ -17,4 +17,5 @@ class Pilot : public Airline, AirlineManager{
         void addPilot(std::map<int, Pilot> &pilotMapping);
         void editPilot(std::map<int, Pilot> &pilotMapping);
         void printAllPilots(std::map<int, Pilot> &pilotMapping);
+        void deletePilot(std::map<int, Pilot> &pilotMapping);
 };

@@ -105,3 +105,21 @@ void Pilot::printAllPilots(std::map<int, Pilot> &pilotMapping)
              << "Phone Number: " << pilot.phoneNumber << "\n\n";
     }
 }
+
+void Pilot::deletePilot(std::map<int, Pilot> &pilotMapping)
+{
+    int pilotIDToDelete;
+    cout << "Enter the Pilot ID to delete: ";
+    cin >> pilotIDToDelete;
+
+    auto it = pilotMapping.find(pilotIDToDelete);
+    if (it != pilotMapping.end())
+    {
+        pilotMapping.erase(it);
+        cout << "pilot deleted successfully." << endl;
+    }
+    else
+    {
+        cout << "pilot not found." << endl;
+    }
+}
