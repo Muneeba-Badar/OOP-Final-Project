@@ -1,28 +1,31 @@
-#include<iostream>
 #include<cstring>
-#include<map>
-using namespace std;
+#include "DatabaseConnection.hpp"
 
-
-class flight{
-    //- private 
-    // # protected
-    // + public
-    protected:
-    string flightNumber;
-    string time;
-    string from_airport;
-    string to_airport;
-    string flightType;
-    bool isDomestic;
+class Flight{
     private:
-    int flightId;
-    int static autoIncFlightId;
-    public:
-    void addFlight(std::map<int, flight> & flightmapping);
-    void deleteFlight(std::map<int, flight> & flightmapping);
-    int generateFlightID();
+        int flightId;
+        static int autoIncFlightId;
+        SAConnection* connection; // Pointer to the database connection
+    protected:
+        int tailNumber;
+        int flightNumber;
+        string data;
+        string time;
+        string flightStatus
+        int from_airportID;
+        int to_airportID;
+        int flightTypeID;
+        int runwayID;
+        int TerminalID;
+        int GateID;
+        bool isDomestic;
 
+    public:
+        void addFlight(SAConnection* conn);
+        void deleteFlight(SAConnection* conn);
+        int generateFlightID();
+        void setConnection(SAConnection* conn);
+        void menu(SAConnection* conn);
 
 
 };

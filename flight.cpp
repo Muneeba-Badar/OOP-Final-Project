@@ -1,33 +1,53 @@
 #include "Flight.hpp"
-
 #include <iostream>
-#include <map>
 using namespace std;
-int flight::autoIncFlightId = 0;
 
-int flight::generateFlightID() {
+int Flight::autoIncFlightId = 0;
+int Flight::generateFlightID()
+{
     return autoIncFlightId++;
 }
-void flight::addFlight(std::map<int, flight> & flightmapping){
-    flightId=generateFlightID();
+
+void Flight::setConnection(SAConnection* conn){
+    connection = conn;
+}
+
+void Flight::addFlight(SAConnection* conn){
+    flightId = generateFlightID();
+
     cout<<"Enter the Flight number: ";
     cin>>flightNumber;
-    cout<<"Enter time: ";
+    cout << "Enter Date (in the format DD-MM-YYYY): ";
+    cin >> date;
+    cout<<"Enter time (in the format HH:MM): ";
     cin>>time;
+    cout << "Enter Tail Number";
+    cin >> tailNumber
     cout<<"Enter the name of the country from where the flight is departuring: ";
     cin>>to_airport;
+    cout << "Enter FLight Status";
+    cin >> flightStatus;
     cout<<"Enter the name of the country where the flight is arriving: ";
     cin>>from_airport;
-    cout<<"What type of flight is it?";
+    cout << "Enter RunwayID: "
+    cin >> runwayID;
+    cout << "Enter TerminalID";
+    cin >> TerminalID
+    cout<<"Enter Flight Type";
     cin>>flightType;
-    cout<<"Is the flight domestic? ";
+    cout<<"Is the flight domestic (answer 1 if true and 0 if false)? ";
     cin>>isDomestic;
-    flightmapping[flightId] = *this;
+
+    // insert data into the database
+    SACommand cmd(&connection);
+    cmd.setCommandText("INSERT INTO Flight (FlightID, FlightNo, Date, Time, TailNumber, FlightStatus, RumwayID, TerminalID, DestinationTo, ArrivalFrom, FlightTypeID, GateID, IsDomestic) VALUES (:1, :2)");
+    cmd << flightId << flightNumber << date << time << tailNumber << flightStatus << runwayID << TerminalID << to_airport << from_a ;
+    cmd.Execute();
 
     cout << "Flight added successfully. ID: " << flightId << endl;
 }
 
-void flight::deleteFlight(std::map<int, flight> &fligthmapping)
+void Flight::deleteFlight(SAConnection* conn)
 {
     
         int flightIDToDelete;
