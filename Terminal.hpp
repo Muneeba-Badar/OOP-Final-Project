@@ -1,17 +1,19 @@
-#include<iostream>
 #include<cstring>
-#include <Airport.hpp>
+#include "DatabaseConnection.hpp"
 
-class terminal{
+class Terminal{
     private:
-    int terminalId;
-    static int autoIncTerminalId;
+        int terminalId;
+        static int autoIncTerminalId;
+        SAConnection* connection; // Pointer to the database connection
+
     protected:
-    int terminalNumber;
+        int terminalNumber;
+
     public:
-    void addTerminal(std::map<int, terminal> & Terminalmapping);
-    void deleteTerminal(std::map<int, terminal> & Terminalmapping);
-    int generateTerminalId();
-
-
+        void addTerminal(SAConnection* conn);
+        void deleteTerminal(SAConnection* conn);
+        int generateTerminalId();
+        void setConnection(SAConnection* conn);
+        void menu(SAConnection* conn);
 };

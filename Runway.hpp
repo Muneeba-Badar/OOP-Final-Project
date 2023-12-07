@@ -1,19 +1,19 @@
-#include <iostream>
-#include <cstring>
-#include <map>
-using namespace std;
+#include "DatabaseConnection.hpp"
 
 class Runway{
     private:
         int RunwayID;
-        int static autoIncRunwayId;
-        protected:
+        static int autoIncRunwayId; // static because it needs to update the primary key so it needs to stay in scope even when the object is destroyed
+        SAConnection* connection; // Pointer to the database connection
+
+    protected:
         int RunwayNumber;
         double RunwayLength;
+
     public:
-
-        void addRunway(std::map<int, Runway> & Runwaymapping);
-        void deleteRunway(std::map<int, Runway> & Runwaymapping);
+        void addRunway(SAConnection* conn);
+        void deleteRunway(SAConnection* conn);
         int generateRunwayId();
-
+        void setConnection(SAConnection* conn);
+        void menu(SAConnection* conn);
 };
