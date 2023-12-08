@@ -16,7 +16,8 @@ void Airline::addAirline(std::map<int, Airline> &airlineMapping)
 {
     airlineID = generateId();
     cout << "Enter airline name: ";
-    cin >> airlineName;
+    // cin >> airlineName;
+    getline(cin, airlineName);
     cout << "Enter Contact Person name: ";
     cin >> contactPersonName;
     cout << "Enter the phone number of the contact person: ";

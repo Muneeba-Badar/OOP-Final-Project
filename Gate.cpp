@@ -11,7 +11,7 @@ int Gate::generateID()
     }
 
 
-void Gate::addGate(std::map<int, Gate> &GateMapping)
+void Gate::addGate(SAConnection* conn)
 {
     gateId = generateID();
     cout << "Enter Gate number: ";    
@@ -23,7 +23,7 @@ void Gate::addGate(std::map<int, Gate> &GateMapping)
     cout << "Gate added successfully. ID: " << gateId << endl;
 }
 
-void Gate::printAllGates(std::map<int, Gate> &GateMapping)
+void Gate::printAllGates(SAConnection* conn)
 {
     cout << "\nAll Gates:\n";
     for (const auto &entry : GateMapping)
@@ -34,7 +34,7 @@ void Gate::printAllGates(std::map<int, Gate> &GateMapping)
     }
 }
 
-void Gate::deleteGate(std::map<int, Gate> &GateMapping)
+void Gate::deleteGate(SAConnection* conn)
 {
     int gateIdToDelete;
     cout << "Enter the Gate ID to delete: ";
