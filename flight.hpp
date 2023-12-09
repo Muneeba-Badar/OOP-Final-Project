@@ -11,13 +11,10 @@ class Flight{
         int flightNumber;
         string date;
         string time;
-        string flightStatus
-        int from_airportID;
-        int to_airportID;
-        int flightTypeID;
-        int runwayID;
-        int TerminalID;
-        int GateID;
+        string flightStatus;
+        string  from_airport;
+        string to_airport;
+        string flightType;
         bool isDomestic;
 
     public:
