@@ -32,16 +32,7 @@ void Gate::addGate(SAConnection* conn)
 
 }
 
-void Gate::printAllGates(SAConnection* conn)
-{
-    cout << "\nAll Gates:\n";
-    for (const auto &entry : GateMapping)
-    {
-        const Gate &Gate = entry.second;
-        cout << "Gate ID: " << Gate.gateId << "\n"
-             << "Gate Number: " << Gate.gateNumber << "\n\n";
-    }
-}
+
 
 void Gate::deleteGate(SAConnection* conn)
 {
