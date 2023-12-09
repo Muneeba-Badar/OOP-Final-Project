@@ -5,22 +5,31 @@
 using namespace std;
 
 Gate::autoIncGateId = 0;
-int Gate::generateID()
+int Gate::generateGateID()
     {
         return autoIncGateId++;
     }
 
+void Gate::setConnection(SAConnection* conn){
+    connection = conn;
+}
 
 void Gate::addGate(SAConnection* conn)
 {
-    gateId = generateID();
-    cout << "Enter Gate number: ";    
-    cin >> gateNumber;
+    gateId=generateGateID();
 
-    // Add the Gate to the map
-    GateMapping[gateId] = *this;
+    cout<<"Enter Gate Number: ";
+    cin>>gateNumber;
+    
+    // insert data into the database
+    SACommand cmd(&connection);
+    cmd.setCommandText("INSERT INTO Gate (gateID, gateNumber) VALUES (:1, :2)");
+    cmd << gateID<< gateNumber;
+    cmd.Execute();
 
     cout << "Gate added successfully. ID: " << gateId << endl;
+}
+
 }
 
 void Gate::printAllGates(SAConnection* conn)
@@ -36,18 +45,20 @@ void Gate::printAllGates(SAConnection* conn)
 
 void Gate::deleteGate(SAConnection* conn)
 {
-    int gateIdToDelete;
-    cout << "Enter the Gate ID to delete: ";
-    cin >> gateIdToDelete;
-
-    auto it = GateMapping.find(gateIdToDelete);
-    if (it != GateMapping.end())
-    {
-        GateMapping.erase(it);
+    int deleteGateid;
+    cout << "Enter Id of the Gate you want to delete: ";
+    cin >> deleteTerminalid;
+    
+    // delete data from databse
+    SACommand cmd(&connection);
+    cmd.setCommandText("DELETE FROM Gate WHERE gateId = :1");
+    cmd << deleteGateid;
+    
+    // checks if data to be deleted is present in the database then delete else produce error message
+    if (cmd.Execute() > 0) {
         cout << "Gate deleted successfully." << endl;
     }
-    else
-    {
+    else {
         cout << "Gate not found." << endl;
     }
 }
