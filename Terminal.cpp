@@ -50,7 +50,7 @@ void Terminal::menu(SAConnection* conn){
     while (true)
     {
         cout<<"What do you want to do?\n";
-        cout<<"\n Menu: \n 1. Add Terminal \n 2. Delete Terminal\n 3. Exit\n";
+        cout<<"\n Menu: \n 1. Add Terminal: \n 2. Delete Terminal: \n 3. Exit\n";
         cin >> choice;
         if(choice == 1){
             addTerminal(conn);
