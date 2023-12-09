@@ -7,7 +7,7 @@ int Terminal::generateTerminalId() {
     return autoIncTerminalId++;
 }
 
-void Runway::setConnection(SAConnection* conn){
+void Terminal::setConnection(SAConnection* conn){
     connection = conn;
 }
 
