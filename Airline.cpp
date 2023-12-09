@@ -33,7 +33,7 @@ void Airline::addAirline(SAConnection* conn){
 
     // insert data into the database
     SACommand cmd(&connection);
-    cmd.setCommandText("INSERT INTO Airline (AirlineID, AirlineName, Contact, Email, HQCity, HQcountry) VALUES (:1, :2, :3, :4, :5, :6)");
+    cmd.setCommandText("INSERT INTO Airline (AirlineID, AirlineName, Contact, Email, HQCity, HQcountry) VALUES (:1, :2, :3, :4, :5, :6, :7)");
     cmd << airlineID << airlineName << contactPersonName << phoneNumber << email << HQcity  << HQcountry;
     cmd.Execute();
 
