@@ -9,7 +9,7 @@ class Flight{
     protected:
         int tailNumber;
         int flightNumber;
-        string data;
+        string date;
         string time;
         string flightStatus
         int from_airportID;
