@@ -7,6 +7,7 @@ class Airline
     private:
         int airlineID;
         static int autoIncAirlineId;
+    protected:
         std::string airlineName;
         std::string contactPersonName;
         std::string phoneNumber;
