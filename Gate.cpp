@@ -62,3 +62,21 @@ void Gate::deleteGate(SAConnection* conn)
         cout << "Gate not found." << endl;
     }
 }
+void Gate::menu(SAConnection* conn){
+    int choice;
+    while (true)
+    {
+        cout<<"What do you want to do?\n";
+        cout<<"\n Menu: \n 1. Add Gate: \n 2. Delete Gate\n 3. Exit\n";
+        cin >> choice;
+        if(choice == 1){
+            addGate(conn);
+        }
+        else if(choice == 2){
+            deleteGate(conn);
+        }
+        else{
+            cout << "Invalid choice. Please enter a valid option.\n"
+        }
+    }
+}
