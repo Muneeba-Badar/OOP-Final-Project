@@ -55,7 +55,7 @@ void Terminal::menu(SAConnection* conn){
         if(choice == 1){
             addTerminal(conn);
         }
-        else if(TerminalChoice == 2){
+        else if(choice == 2){
             deleteTerminal(conn);
         }
         else{
