@@ -12,7 +12,7 @@ class Gate{
     public:
         void addGate(SAConnection* conn);
         void deleteGate(SAConnection* conn);
-        void printAllGates(SAConnection* conn);
+        //void printAllGates(SAConnection* conn);
         int generateID();
         void setConnection(SAConnection* conn);
         void menu(SAConnection* conn);
