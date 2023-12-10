@@ -78,5 +78,25 @@ void Airline::menu(SAConnection* conn){
         }
     }
 }
+void Airline::printAirlineDetails() const {
+    // Fetch data from the database
+    SACommand cmd(&connection);
+    cmd.setCommandText("SELECT * FROM Airline WHERE AirlineID = :1");
+    cmd << airlineID;
+    cmd.Execute();
 
+    // Check if data is fetched successfully
+    if (cmd.FetchNext()) {
+        cout << "Airline ID: " << cmd.Field("AirlineID").asLong() << endl;
+        cout << "Airline Name: " << cmd.Field("AirlineName").asString() << endl;
+        cout << "Contact Person Name: " << cmd.Field("Contact").asString() << endl;
+        cout << "Phone Number: " << cmd.Field("PhoneNumber").asString() << endl;
+        cout << "Email: " << cmd.Field("Email").asString() << endl;
+        cout << "HQ City: " << cmd.Field("HQCity").asString() << endl;
+        cout << "HQ Country: " << cmd.Field("HQCountry").asString() << endl;
+    } 
+    else {
+        cout << "Airline not found in the database." << endl;
+    }
+}
 
