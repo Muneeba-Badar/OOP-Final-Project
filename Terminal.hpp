@@ -16,4 +16,5 @@ class Terminal{
         int generateTerminalId();
         void setConnection(SAConnection* conn);
         void menu(SAConnection* conn);
+        void printTerminalDetails();
 };
