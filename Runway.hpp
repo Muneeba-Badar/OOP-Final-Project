@@ -16,4 +16,5 @@ class Runway{
         int generateRunwayId();
         void setConnection(SAConnection* conn);
         void menu(SAConnection* conn);
+        void printRunwayDetails()
 };
