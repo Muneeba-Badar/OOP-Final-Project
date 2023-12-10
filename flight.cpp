@@ -82,5 +82,29 @@ void Flight::menu(SAConnection* conn){
         }
     }
 }
+void Flight::printFlightDetails() const {
+    // Fetch data from the database
+    SACommand cmd(&connection);
+    cmd.setCommandText("SELECT * FROM Flight WHERE FlightID = :1");
+    cmd << flightId;
+    cmd.Execute();
+
+    // Check if data is fetched successfully
+    if (cmd.FetchNext()) {
+        cout << "Flight ID: " << cmd.Field("FlightID").asLong() << endl;
+        cout << "Flight Number: " << cmd.Field("FlightNo").asString() << endl;
+        cout << "Date: " << cmd.Field("Date").asString() << endl;
+        cout << "Time: " << cmd.Field("Time").asString() << endl;
+        cout << "Tail Number: " << cmd.Field("TailNumber").asString() << endl;
+        cout << "Destination: " << cmd.Field("DestinationTo").asString() << endl;
+        cout << "Arrival From: " << cmd.Field("ArrivalFrom").asString() << endl;
+        cout << "Flight Status: " << cmd.Field("FlightStatus").asString() << endl;
+        cout << "Flight Type: " << cmd.Field("FlightType").asString() << endl;
+        cout << "Is Domestic: " << (cmd.Field("IsDomestic").asBool() ? "Yes" : "No") << endl;
+    } 
+    else {
+        cout << "Flight not found in the database." << endl;
+    }
+}
 
 
