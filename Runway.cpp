@@ -72,4 +72,24 @@ void Runway::menu(SAConnection* conn)
         }
     }
 }
+void Runway::printRunwayDetails() const {
+    // Fetch data from the database
+    SACommand cmd(&connection);
+    cmd.setCommandText("SELECT * FROM Runway WHERE RunwayId = :1");
+    cmd << RunwayID;
+    cmd.Execute();
+
+    // Check if data is fetched successfully
+    if (cmd.FetchNext()) {
+        cout << "Runway ID: " << cmd.Field("RunwayId").asLong() << endl;
+        cout << "Runway Number: " << cmd.Field("RunwayNumber").asString() << endl;
+        cout << "Runway Length: " << cmd.Field("RunwayLength").asDouble() << endl;
+        // Add additional details as needed
+    } 
+    else {
+        cout << "Runway not found in the database." << endl;
+    }
+}
+
+
 
