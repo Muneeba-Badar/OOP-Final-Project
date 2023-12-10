@@ -18,7 +18,7 @@ class Airline
     public:
         int generateId();
         void addAirline(SAConnection* conn);
-        //void printAllAirlines(SAConnection* conn);
+        void printAirlineDetails()
         void setConnection(SAConnection* conn);
         void menu(SAConnection* conn);
 };
