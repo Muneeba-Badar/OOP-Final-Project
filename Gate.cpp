@@ -71,3 +71,20 @@ void Gate::menu(SAConnection* conn){
         }
     }
 }
+void Gate::printGateDetails() const {
+    // Fetch data from the database
+    SACommand cmd(&connection);
+    cmd.setCommandText("SELECT * FROM Gate WHERE gateID = :1");
+    cmd << gateId;
+    cmd.Execute();
+
+    // Check if data is fetched successfully
+    if (cmd.FetchNext()) {
+        cout << "Gate ID: " << cmd.Field("gateID").asLong() << endl;
+        cout << "Gate Number: " << cmd.Field("gateNumber").asString() << endl;
+        // Add additional details as needed
+    } 
+    else {
+        cout << "Gate not found in the database." << endl;
+    }
+}
