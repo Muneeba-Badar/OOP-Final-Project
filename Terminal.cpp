@@ -63,4 +63,21 @@ void Terminal::menu(SAConnection* conn){
         }
     }
 }
+void Terminal::printTerminalDetails() const {
+    // Fetch data from the database
+    SACommand cmd(&connection);
+    cmd.setCommandText("SELECT * FROM Termial WHERE TerminalID = :1");
+    cmd << terminalId;
+    cmd.Execute();
+
+    // Check if data is fetched successfully
+    if (cmd.FetchNext()) {
+        cout << "Terminal ID: " << cmd.Field("TerminalID").asLong() << endl;
+        cout << "Terminal Number: " << cmd.Field("TerminalNumber").asString() << endl;
+        // Add additional details as needed
+    } 
+    else {
+        cout << "Terminal not found in the database." << endl;
+    }
+}
 
