@@ -16,5 +16,6 @@ class Gate{
         int generateID();
         void setConnection(SAConnection* conn);
         void menu(SAConnection* conn);
+        void printGateDetails();
 
 };
