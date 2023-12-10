@@ -23,6 +23,7 @@ class Flight{
         int generateFlightID();
         void setConnection(SAConnection* conn);
         void menu(SAConnection* conn);
+        void printFlightDetails();
 
 
 };
