@@ -1,5 +1,5 @@
 #include<iostream>
-#include<cstring>
+#include<string>
 #include <map>
 #include "DatabaseConnection.hpp"
 
@@ -18,5 +18,5 @@ public:
     int generateGateID();
     void setConnection(SAConnection* conn);
     void menu(SAConnection* conn);
-    void printGateDetails(SAConnection* conn);
+    void printGateDetails(SAConnection* conn) const;
 };

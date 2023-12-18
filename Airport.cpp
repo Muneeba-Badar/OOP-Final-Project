@@ -24,9 +24,13 @@ void Airport::addAirport(SAConnection* conn){ // this function adds airport
     cin >> City;
 
     // insert data into the database
-    SACommand cmd(&connection);
-    cmd.setCommandText("INSERT INTO Airport (AirportId, AirportName, Country, City) VALUES (:1, :2, :3, :4)");
-    cmd << AirportID << AirportName << Country << City;
+    SACommand cmd(conn, _TSA("INSERT INTO Airport (AirportID, AirportName, Country, City) VALUES (:1, :2, :3, :4)"));
+    // cmd.setCommandText("INSERT INTO Airport (AirportId, AirportName, Country, City) VALUES (:1, :2, :3, :4)");
+    cmd.Param(1).setAsInt64() = AirportID;
+    cmd.Param(2).setAsString() = SAString(_TSA(AirportName.c_str()));;
+    cmd.Param(3).setAsString() = SAString(_TSA(Country.c_str()));;
+    cmd.Param(4).setAsString() = SAString(_TSA(City.c_str()));;
+    // cmd << _TSA(AirportID) << _TSA(AirportName) << _TSA(Country) << _TSA(City);
     cmd.Execute();
 
     // prints the confirmation message on successful storing inside the map
@@ -39,13 +43,15 @@ void Airport::deleteAirport(SAConnection* conn) // this deletes the airports add
         cout << "Enter the Airport ID to delete: ";
         cin >> airportIDToDelete; // takes input from the user
 
+        SACommand cmd(conn, _TSA("DELETE FROM Airport WHERE AirportId = :1"));
+        cmd.param(1).setAsInt64()=airportIDToDelete;
+        cmd.Execute();
+
+
         // delete data from databse
-        SACommand cmd(&connection);
-        cmd.setCommandText("DELETE FROM Airport WHERE AirportId = :1");
-        cmd << airportIDToDelete;
      
         // checks if data to be deleted is present in the database then delete else produce error message
-        if (cmd.Execute() > 0) {
+        if (cmd.RowsAffected() > 0) {
             cout << "Airport deleted successfully." << endl;
         } else {
             cout << "Airport not found." << endl;

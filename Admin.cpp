@@ -1,7 +1,6 @@
 #include <iostream>
-#include <map>
 #include "Admin.hpp"
-#include "SQLAPI.h" // Include the SQLAPI++ header
+// #include "C:\\Users\\munee\\Downloads\\sqlapi++library\\SQLAPI\\include\\SQLAPI.h" // Include the SQLAPI++ header
 using namespace std;
 
 void Admin::setConnection(SAConnection* conn) {
@@ -17,8 +16,15 @@ void Admin::addManager(SAConnection* conn) {
     cin >> password;
 
     // Insert data into the database
-    SACommand cmd(conn);
-    cmd.setCommandText("INSERT INTO Manager (Name, Username, Password) VALUES (:1, :2, :3)");
+    cmd.setCommandText(conn, _TSA("INSERT INTO Manager (Name, Username, Password) VALUES (:1, :2, :3)"));
+    cmd.param(1).setAsString()=SAString(_TSA(name.c_str()));
+    cmd.param(2).setAsString()=SAString(_TSA(username.c_str()));
+
+    cmd.param(3).setAsString()=SAString(_TSA(password.c_str()));
+    cmd.Execute();
+
+
+
     cmd << name << username << password;
     cmd.Execute();
 
@@ -31,10 +37,11 @@ void Admin::deleteManager(SAConnection* conn) {
     cin >> uName;
 
     // Delete data from the database
-    SACommand cmd(conn);
-    cmd.setCommandText("DELETE FROM Manager WHERE Username = :1");
-    cmd << uName;
-    if (cmd.Execute() > 0) {
+    cmd.setCommandText(conn, _TSA("DELETE FROM Manager WHERE Username = :1"));
+    cmd.param(1).setAsString()=SAString(_TSA(name.c_str()));
+    cmd.Execute();
+
+    if (cmd.RowsAffected() > 0) {
         cout << "Manager deleted successfully." << endl;
     } else {
         cout << "Manager not found." << endl;
@@ -62,18 +69,24 @@ void Admin::menu(SAConnection* conn) {
 
 void Admin::printManagerDetails(SAConnection* conn) const {
     // Fetch data from the database
-    SACommand cmd(conn);
-    cmd.setCommandText("SELECT * FROM Manager WHERE Username = :1");
-    cmd << username;
+    cmd.setCommandText(conn, _TSA("SELECT * FROM Manager WHERE Username = :1"));
+    cmd.Param(1).setAsString() = SAString(_TSA(username.c_str()));;
+
     cmd.Execute();
 
     // Check if data is fetched successfully
     if (cmd.FetchNext()) {
         cout << "Manager ID: " << cmd.Field("ManagerID").asLong() << endl;
-        cout << "Manager Name: " << cmd.Field("Name").asString() << endl;
-        cout << "Manager Username: " << cmd.Field("Username").asString() << endl;
+        cout << "Manager Name: " << (string) cmd.Field("Name").asString() << endl;
+        cout << "Manager Username: " << (string) cmd.Field("Username").asString() << endl;
         // Add additional details as needed
     } else {
         cout << "Manager not found in the database." << endl;
     }
+}
+
+// Overloaded << operator for SACommand
+SACommand& operator<<(SACommand& cmd, const std::string& value) {
+    cmd.Param(cmd.ParamCount()).setAsString() = value.c_str();
+    return cmd;
 }

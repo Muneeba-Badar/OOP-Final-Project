@@ -21,9 +21,13 @@ void Gate::addGate(SAConnection* conn) {
     cin >> gateNumber;
 
     // insert data into the database
-    SACommand cmd(conn);
-    cmd.setCommandText("INSERT INTO Gate (gateID, gateNumber) VALUES (:1, :2)");
-    cmd << gateId << gateNumber;
+    SACommand cmd(conn, _TSA("INSERT INTO Gate (gateID, gateNumber VALUES (:1, :2)"));
+    // cmd.setCommandText("INSERT INTO Airport (AirportId, AirportName, Country, City) VALUES (:1, :2, :3, :4)");
+    cmd.Param(1).setAsInt64() = gateId;
+    cmd.Param(2).setAsInt64() =gateNumber;
+
+    cmd.Execute();
+
 
     try {
         cmd.Execute();
@@ -39,12 +43,13 @@ void Gate::deleteGate(SAConnection* conn) {
     cin >> deleteGateId;
 
     // delete data from database
-    SACommand cmd(conn);
-    cmd.setCommandText("DELETE FROM Gate WHERE gateID = :1");
-    cmd << deleteGateId;
+    SACommand cmd(conn, _TSA("DELETE FROM Gate WHERE gateID = :1"));
+    cmd.Param(1).setAsInt64() = deleteGateId;  // Set the parameter value
 
     try {
-        if (cmd.Execute() > 0) {
+        cmd.Execute();
+
+        if (cmd.RowsAffected() > 0) {
             cout << "Gate deleted successfully." << endl;
         } else {
             cout << "Gate not found." << endl;
@@ -75,16 +80,16 @@ void Gate::menu(SAConnection* conn) {
 
 void Gate::printGateDetails(SAConnection* conn) const {
     // Fetch data from the database
-    SACommand cmd(conn);
-    cmd.setCommandText("SELECT * FROM Gate WHERE gateID = :1");
-    cmd << gateId;
+    SACommand cmd(conn, _TSA("Select *  FROM Gate WHERE gateID = :1"));
+    cmd.Param(1).setAsInt64() = gateId;  // Set the parameter value
+
 
     try {
         cmd.Execute();
 
         if (cmd.FetchNext()) {
             cout << "Gate ID: " << cmd.Field("gateID").asLong() << endl;
-            cout << "Gate Number: " << cmd.Field("gateNumber").asString() << endl;
+            cout << "Gate Number: " << (string) cmd.Field("gateNumber").asString() << endl;
             // Add additional details as needed
         } else {
             cout << "Gate not found in the database." << endl;

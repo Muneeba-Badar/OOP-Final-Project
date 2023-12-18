@@ -1,4 +1,4 @@
-#include<cstring>
+#include<string>
 #include "DatabaseConnection.hpp"
 
 class Flight{
@@ -9,12 +9,12 @@ class Flight{
     protected:
         int tailNumber;
         int flightNumber;
-        string date;
-        string time;
-        string flightStatus;
-        string  from_airport;
-        string to_airport;
-        string flightType;
+        std::string date;
+        std::string time;
+        std::string flightStatus;
+        std::string from_airport;
+        std::string to_airport;
+        std::string flightType;
         bool isDomestic;
 
     public:
@@ -23,7 +23,7 @@ class Flight{
         int generateFlightID();
         void setConnection(SAConnection* conn);
         void menu(SAConnection* conn);
-        void printFlightDetails();
+        void printFlightDetails() const;
 
 
 };

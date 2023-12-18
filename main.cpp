@@ -5,11 +5,11 @@
 #include "Pilot.hpp"
 #include "Gate.hpp"
 #include <iostream>
-#include <sqlapi.h>
 using namespace std;
+#pragma once
 
 int main() {
-    SAConnection connection; // Create an instance of SAConnection
+    SAConnection conn; // Create an instance of SAConnection
 
     cout<<"What do you want to use:\n 1. Airport\n 2. Runway\n 3. Terminal\n 4. Flight \n 5. Airline\n 6. Pilot\n 7. Gate\n";
     int ChooseTable;
@@ -26,43 +26,43 @@ int main() {
         cerr << "Error: " << ex.ErrText().GetMultiByteChars() << endl;
     }
 
+    Airport airport;
+    Runway runway;
+    Terminal terminal;
+    Flight flight;
+    Airline airline;
+    Pilot pilot;
+    Gate gate;
     switch (ChooseTable)
     {
     case 1:
-        Airport airport;
         airport.setConnection(conn);
         airport.menu(conn);
         break;
 
     case 2:
-        Runway runway;
         runway.setConnection(conn);
         runway.menu(conn);
         break;
 
     case 3:
-        Terminal terminal;
         terminal.setConnection(conn):
         terminal.menu(conn);
         break;
 
     case 4:
-        Flight flight;
         flight.setConnection(conn);
         flight.menu(conn);
 
     case 5:
-        Airline airline;
         airline.setConnection(conn);
         airline.menu(conn);
 
     case 6:
-        Pilot pilot;
         pilot.setConnection(conn);
         pilot.menu(conn);
 
     case 7:
-        Gate gate;
         gate.setConnection(conn);
         gate.menu(conn);
 
@@ -254,7 +254,7 @@ int main() {
     // }
 
      // Disconnect from the database
-    connection.Disconnect();
-     return 0;
+    conn.Disconnect();
+    return 0;
 }
    

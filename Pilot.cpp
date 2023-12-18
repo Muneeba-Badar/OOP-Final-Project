@@ -29,8 +29,15 @@ void Pilot::addPilot(SAConnection* conn)
     cin >> email;
     cout << "Enter the Address: ";
     cin >> address;
-    SACommand cmd(conn);
-    cmd.setCommandText("Insert into Pilot (pilotID,pilotName,liscenceNo,phoneNumber,email,address): VALUES(:1,:2,:3,:4,:5,:6)");
+    SACommand cmd(conn, _TSA("INSERT INTO Pilot (pilotID, liscenceNo, email, address, pilotName, phoneNumber) VALUES (:1, :2,:3,:4,:5,:6)"));
+    // cmd.setCommandText("INSERT INTO Airport (AirportId, AirportName, Country, City) VALUES (:1, :2, :3, :4)");
+    cmd.Param(1).setAsInt64() = pilotID;
+    cmd.Param(2).setAsInt64() = liscenceNo;
+    cmd.Param(3).setAsString() = SAString(_TSA(email.c_str()));
+    cmd.Param(4).setAsString() = SAString(_TSA(address.c_str()));
+    cmd.Param(5).setAsString() = SAString(_TSA(pilotName.c_str()));
+    cmd.Param(6).setAsString() = SAString(_TSA(phoneNumber.c_str()));
+  
     cmd.Execute();
 
     cout << "Pilot added successfully. ID: " << pilotID << endl;
@@ -42,9 +49,11 @@ void Pilot::editPilot(SAConnection* conn) {
     int pilotIdToEdit;
     cout << "Enter the Pilot ID to edit: ";
     cin >> pilotIdToEdit;
+    SACommand cmd(conn, _TSA("SELECT * FROM Pilots WHERE PilotID = :1"));
+
 
     SACommand cmd(connection);
-    cmd.setCommandText("SELECT * FROM Pilots WHERE PilotID = :1");
+    cmd.setCommandText();
     cmd.Param(1).setAsLong() = pilotIdToEdit;
 
     try {
@@ -55,11 +64,11 @@ void Pilot::editPilot(SAConnection* conn) {
             cout << "Editing details for pilot with ID " << pilotIdToEdit << endl;
 
             cout << "Existing Details:" << endl;
-            cout << "1. Name: " <<cmd.Field("PilotName").asString() << endl;
-            cout << "2. Liscence Number: " << cmd.Field("LiscenceNo").asLong() << endl;
-            cout << "3. Phone Number: "<<cmd.Field("PhoneNumber").asString() << endl;
-            cout << "4. Email: " << cmd.Field("Email").asString() << endl;
-            cout << "5. Address: " << cmd.Field("Address").asString() << endl;
+            cout << "1. Name: " << (string) cmd.Field("PilotName").asString() << endl;
+            cout << "2. Liscence Number: " << (string) cmd.Field("LiscenceNo").asLong() << endl;
+            cout << "3. Phone Number: "<< (string) cmd.Field("PhoneNumber").asString() << endl;
+            cout << "4. Email: " << (string) cmd.Field("Email").asString() << endl;
+            cout << "5. Address: " << (string) cmd.Field("Address").asString() << endl;
 
             // Prompt user for the field to edit
             int choice;
@@ -69,23 +78,23 @@ void Pilot::editPilot(SAConnection* conn) {
             switch (choice) {
                 case 1:
                     cout << "Enter new name: ";
-                    cin >> cmd.Field("PilotName").asString();
+                    cin >> (string) cmd.Field("PilotName").asString();
                     break;
                 case 2:
                     cout << "Enter new liscence number: ";
-                    cin >> cmd.Field("LiscenceNo").asLong();
+                    cin >> (string) cmd.Field("LiscenceNo").asLong();
                     break;
                 case 3:
                     cout << "Enter new phone number: ";
-                    cin >> cmd.Field("PhoneNumber").asString();
+                    cin >> (string) cmd.Field("PhoneNumber").asString();
                     break;
                 case 4:
                     cout << "Enter new email: ";
-                    cin >> cmd.Field("Email").asString();
+                    cin >> (string) cmd.Field("Email").asString();
                     break;
                 case 5:
                     cout << "Enter new address: ";
-                    cin >> cmd.Field("Address").asString();
+                    cin >> (string) cmd.Field("Address").asString();
                     break;
                 case 0:
                     cout << "Exiting edit mode." << endl;
@@ -121,9 +130,12 @@ void Pilot::deletePilot(SAConnection* conn) {
         cout << "Enter the Pilot ID to delete: ";
         cin >> pilotIDToDelete;
 
-        SACommand cmd(conn);
-        cmd.setCommandText("DELETE FROM Pilot WHERE pilotID = :1");
-        cmd << static_cast<long>( pilotIDToDelete);
+        SACommand cmd(conn, _TSA("DELETE FROM Pilot WHERE pilotID = :1"));
+        cmd.Param(1).setAsInt64() = pilotIDToDelete;  // Set the parameter value
+
+        cmd.Execute();
+
+
 
         if ( cmd.RowsAffected() > 0) {
             cout << "Pilot deleted successfully." << endl;
@@ -131,6 +143,10 @@ void Pilot::deletePilot(SAConnection* conn) {
             cout << "Pilot not found." << endl;
         } //check if there is change in the rows, if yes then we would know that the pilot is deleted
     }
+    catch (SAException& ex){
+        cerr << "Error: " << ex.ErrText().GetMultiByteChars() << endl;
+    }
+}
 
 void Pilot::menu(SAConnection* conn) {
     int choice;
@@ -169,21 +185,22 @@ void Pilot::menu(SAConnection* conn) {
 }
 
 void Pilot::printAllPilots(SAConnection* conn) {
-    setConnection(conn);
 
-    SACommand cmd(connection);
-    cmd.setCommandText("SELECT * FROM Pilots");
+
+    SACommand cmd(conn, _TSA("Select * FROM Pilot WHERE pilotID = :1"));
+    cmd.Param(1).setAsInt64() = pilotIdToEdit;
+
 
     try {
         cmd.Execute();
 
         while (cmd.FetchNext()) {
             int id = cmd.Field("PilotID").asLong();
-            string name = cmd.Field("PilotName").asString();
+            string name = (string) cmd.Field("PilotName").asString();
             int licenseNo = cmd.Field("LiscenceNo").asLong();
-            string phoneNumber = cmd.Field("PhoneNumber").asString();
-            string email = cmd.Field("Email").asString();
-            string address = cmd.Field("Address").asString();
+            string phoneNumber = (string) cmd.Field("PhoneNumber").asString();
+            string email = (string) cmd.Field("Email").asString();
+            string address = (string) cmd.Field("Address").asString();
 
             // Print the retrieved information
             cout << "Pilot ID: " << id << ", Name: " << name << ", License Number: " << licenseNo << ", Phone: " << phoneNumber
@@ -194,8 +211,8 @@ void Pilot::printAllPilots(SAConnection* conn) {
     }
 }
 
-std::ostream& operator<<(std::ostream& os, const SAString& saString) {
-    os << static_cast<const char*>(saString);
-    return os;
-}
+// std::ostream& operator<<(std::ostream& os, const SAString& saString) {
+//     os << static_cast<const char*>(saString);
+//     return os;
+// }
 

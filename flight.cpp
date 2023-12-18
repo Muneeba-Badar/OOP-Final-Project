@@ -1,6 +1,7 @@
-#include "Flight.hpp"
+#include "flight.hpp"
 #include <iostream>
 using namespace std;
+#pragma once
 
 int Flight::autoIncFlightId = 0;
 int Flight::generateFlightID()
@@ -16,47 +17,60 @@ void Flight::addFlight(SAConnection* conn){
     flightId = generateFlightID();
 
     cout<<"Enter the Flight number: ";
-    cin>>flightNumber;
+    cin>> flightNumber;
     cout << "Enter Date (in the format DD-MM-YYYY): ";
     cin >> date;
     cout<<"Enter time (in the format HH:MM): ";
-    cin>>time;
+    cin>> time;
     cout << "Enter Tail Number";
     cin >> tailNumber;
     cout<<"Enter the name of the country where the flight is arriving: ";
-    cin>> to_airport;
+    cin.getline(cin, this->to_airport);
     cout<<"Enter the name of the country where the flight is departing from: ";
-    cin>> from_airport;
+    cin.getline(cin, this->from_airport);
     cout << "Enter FLight Status";
-    cin >> flightStatus;
+    cin.getline(cin, this->flightStatus);
     cout<<"Enter Flight Type";
-    cin>> flightType;
+    cin.getline(cin, this->flightType);
     cout<<"Is the flight domestic (answer 1 if true and 0 if false)? ";
-    cin>>isDomestic;
+    cin>> isDomestic;
 
     // insert data into the database
-    SACommand cmd(&connection);
-    cmd.setCommandText("INSERT INTO Flight (FlightID, FlightNo, Date, Time, TailNumber, FlightStatus, DestinationTo, ArrivalFrom, FlightType, IsDomestic) VALUES (:1, :2)");
-    cmd << flightId << flightNumber << date << time << tailNumber << flightStatus  << to_airport << from_airport << flightType << isDomestic;
+    SACommand cmd(conn, _TSA("INSERT INTO Flight (FlightID, FlightNo, Date, Time, TailNumber, FlightStatus, DestinationTo, ArrivalFrom, FlightType, IsDomestic) VALUES (:1, :2,:3,:4,:5,:6,:7,:8,:9,:10)"));
+    // cmd.setCommandText("INSERT INTO Airport (AirportId, AirportName, Country, City) VALUES (:1, :2, :3, :4)");
+    cmd.Param(1).setAsInt64() = flightId;
+    cmd.Param(2).setAsInt64() =flightNumber;
+    cmd.Param(3).setAsString() = SAString(_TSA(Date.c_str()));
+    cmd.Param(4).setAsString() = SAString(_TSA(Time.c_str()));
+    cmd.Param(5).setAsString() = SAString(_TSA(tailNumber.c_str()));
+    cmd.Param(6).setAsString() = SAString(_TSA(flightStatus.c_str()));
+    cmd.Param(7).setAsString() = SAString(_TSA(to_airport.c_str()));
+    cmd.Param(8).setAsString() = SAString(_TSA(from_airport.c_str()));
+
+    // cmd << _TSA(AirportID) << _TSA(AirportName) << _TSA(Country) << _TSA(City);
     cmd.Execute();
+
 
     cout << "Flight added successfully. ID: " << flightId << endl;
 }
 
 void Flight::deleteFlight(SAConnection* conn)
 {
-    
+
         int deleteFlightid;
         cout << "Enter Id of the Flight you want to delete: ";
         cin >> deleteFlightid;
         
         // delete data from databse
-        SACommand cmd(&connection);
-        cmd.setCommandText("DELETE FROM Flight WHERE FlightId = :1");
-        cmd << deleteFlightid;
+        SACommand cmd(conn, _TSA("DELETE FROM Flight WHERE FlightId = :1"));
+        cmd.Param(1).setAsInt64() = deleteFlightid;  // Set the parameter value
+        cmd.Execute();
+
+
+
         
         // checks if data to be deleted is present in the database then delete else produce error message
-        if (cmd.Execute() > 0) {
+        if (cmd.RowsAffected() > 0) {
             cout << "Flight deleted successfully." << endl;
         }
         else {
@@ -78,28 +92,28 @@ void Flight::menu(SAConnection* conn){
             deleteFlight(conn);
         }
         else{
-            cout << "Invalid choice. Please enter a valid option.\n"
+            cout << "Invalid choice. Please enter a valid option.\n";
         }
     }
 }
 void Flight::printFlightDetails() const {
     // Fetch data from the database
-    SACommand cmd(&connection);
-    cmd.setCommandText("SELECT * FROM Flight WHERE FlightID = :1");
-    cmd << flightId;
+    SACommand cmd(conn, _TSA("SELECT * FROM Flight WHERE FlightID = :1"));
+
+    
     cmd.Execute();
 
     // Check if data is fetched successfully
     if (cmd.FetchNext()) {
         cout << "Flight ID: " << cmd.Field("FlightID").asLong() << endl;
-        cout << "Flight Number: " << cmd.Field("FlightNo").asString() << endl;
-        cout << "Date: " << cmd.Field("Date").asString() << endl;
-        cout << "Time: " << cmd.Field("Time").asString() << endl;
-        cout << "Tail Number: " << cmd.Field("TailNumber").asString() << endl;
-        cout << "Destination: " << cmd.Field("DestinationTo").asString() << endl;
-        cout << "Arrival From: " << cmd.Field("ArrivalFrom").asString() << endl;
-        cout << "Flight Status: " << cmd.Field("FlightStatus").asString() << endl;
-        cout << "Flight Type: " << cmd.Field("FlightType").asString() << endl;
+        cout << "Flight Number: " << (string) cmd.Field("FlightNo").asString() << endl;
+        cout << "Date: " << (string) cmd.Field("Date").asString() << endl;
+        cout << "Time: " << (string) cmd.Field("Time").asString() << endl;
+        cout << "Tail Number: " << (string) cmd.Field("TailNumber").asString() << endl;
+        cout << "Destination: " << (string) cmd.Field("DestinationTo").asString() << endl;
+        cout << "Arrival From: " << (string) cmd.Field("ArrivalFrom").asString() << endl;
+        cout << "Flight Status: " << (string) cmd.Field("FlightStatus").asString() << endl;
+        cout << "Flight Type: " << (string) cmd.Field("FlightType").asString() << endl;
         cout << "Is Domestic: " << (cmd.Field("IsDomestic").asBool() ? "Yes" : "No") << endl;
     } 
     else {

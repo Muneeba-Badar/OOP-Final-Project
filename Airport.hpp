@@ -1,8 +1,8 @@
-#include <cstring>
 #include "DatabaseConnection.hpp"
 #pragma once
 
 using namespace std;
+
 class Airport{
     private:
         int  AirportID;

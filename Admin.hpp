@@ -14,5 +14,7 @@ class Admin{
         void deleteManager(SAConnection* conn);
         void editManager(SAConnection* conn);
         void setConnection(SAConnection* conn);
-
+        void menu(SAConnection* conn);
+        void printManagerDetails(SAConnection* conn) const;
+        friend SACommand& operator<<(SACommand& cmd, const std::string& value);
 };

@@ -32,10 +32,19 @@ void Airline::addAirline(SAConnection* conn){
  
 
     // insert data into the database
-    SACommand cmd(&connection);
-    cmd.setCommandText("INSERT INTO Airline (AirlineID, AirlineName, Contact, Email, HQCity, HQcountry) VALUES (:1, :2, :3, :4, :5, :6, :7)");
-    cmd << airlineID << airlineName << contactPersonName << phoneNumber << email << HQcity  << HQcountry;
+    cmd.setCommandText(conn, _TSA("INSERT INTO Airline (airlineID, airlineName, contactPersonName, phoneNumber, email, HQcity,HQcountry) VALUES (:1, :2, :3, :4, :5, :6, :7)"));
+    // cmd.setCommandText("INSERT INTO Airport (AirportId, AirportName, Country, City) VALUES (:1, :2, :3, :4)");
+    cmd.Param(1).setAsInt64() = airlineID;
+    cmd.Param(2).setAsString() = SAString(_TSA(airlineName.c_str()));;
+    cmd.Param(3).setAsString() = SAString(_TSA(contactPersonName.c_str()));;
+    cmd.Param(4).setAsString() = SAString(_TSA(phoneNumber.c_str()));;
+    cmd.Param(5).setAsString()=SAString(_TSA(email.c_str()));;
+    cmd.Param(6).setAsString()=SAString(_TSA(HQcity.c_str()));;
+    cmd.Param(7).setAsString()=SAString(_TSA(HQcountry.c_str()));;
+
+    // cmd << _TSA(AirportID) << _TSA(AirportName) << _TSA(Country) << _TSA(City);
     cmd.Execute();
+
 
     cout << "Airline added successfully. ID: " << airlineID << endl;
 }
@@ -47,12 +56,12 @@ void Airline:: deleteAirline(SAConnection* conn){
         cin >> deleteAirlineid;
         
         // delete data from databse
-        SACommand cmd(&connection);
-        cmd.setCommandText("DELETE FROM Airline WHERE AirlineId = :1");
-        cmd << deleteAirlineid;
-        
+        cmd.setCommandText(conn, _TSA("DELETE FROM Airline WHERE AirlineId = :1"));
+        cmd.param(1).setAsInt64()=deleteAirlineid;
+        cm.Execute();
+
         // checks if data to be deleted is present in the database then delete else produce error message
-        if (cmd.Execute() > 0) {
+        if (cmd.RowsAffected() > 0) {
             cout << "Airline deleted successfully." << endl;
         }
         else {
@@ -80,20 +89,18 @@ void Airline::menu(SAConnection* conn){
 }
 void Airline::printAirlineDetails() const {
     // Fetch data from the database
-    SACommand cmd(&connection);
-    cmd.setCommandText("SELECT * FROM Airline WHERE AirlineID = :1");
-    cmd << airlineID;
+    cmd.setCommandText(conn, _TSA("SELECT * FROM Airline WHERE AirlineID = :1"));
     cmd.Execute();
 
     // Check if data is fetched successfully
     if (cmd.FetchNext()) {
         cout << "Airline ID: " << cmd.Field("AirlineID").asLong() << endl;
-        cout << "Airline Name: " << cmd.Field("AirlineName").asString() << endl;
-        cout << "Contact Person Name: " << cmd.Field("Contact").asString() << endl;
-        cout << "Phone Number: " << cmd.Field("PhoneNumber").asString() << endl;
-        cout << "Email: " << cmd.Field("Email").asString() << endl;
-        cout << "HQ City: " << cmd.Field("HQCity").asString() << endl;
-        cout << "HQ Country: " << cmd.Field("HQCountry").asString() << endl;
+        cout << "Airline Name: " << (string) cmd.Field("AirlineName").asString() << endl;
+        cout << "Contact Person Name: " << (string) cmd.Field("Contact").asString() << endl;
+        cout << "Phone Number: " << (string) cmd.Field("PhoneNumber").asString() << endl;
+        cout << "Email: " << (string) cmd.Field("Email").asString() << endl;
+        cout << "HQ City: " << (string) cmd.Field("HQCity").asString() << endl;
+        cout << "HQ Country: " << (string) cmd.Field("HQCountry").asString() << endl;
     } 
     else {
         cout << "Airline not found in the database." << endl;

@@ -1,4 +1,4 @@
-#include<cstring>
+#include<string>
 #include "DatabaseConnection.hpp"
 
 class Terminal{
