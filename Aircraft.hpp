@@ -2,6 +2,8 @@
 #include "Airline.hpp"
 using namespace std;
 #include "AircraftManager.hpp"
+#include "DatabaseConnection.hpp"
+
 
 class Aircraft:public Airline, AircraftManager{
     private:

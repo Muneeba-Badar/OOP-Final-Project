@@ -4,87 +4,92 @@
 #include <string>
 using namespace std;
 
-Gate::autoIncGateId = 0;
-int Gate::generateGateID()
-    {
-        return autoIncGateId++;
-    }
+int Gate::autoIncGateId = 0;
 
-void Gate::setConnection(SAConnection* conn){
+int Gate::generateGateID() {
+    return autoIncGateId++;
+}
+
+void Gate::setConnection(SAConnection* conn) {
     connection = conn;
 }
 
-void Gate::addGate(SAConnection* conn)
-{
-    gateId=generateGateID();
+void Gate::addGate(SAConnection* conn) {
+    gateId = generateGateID();
 
-    cout<<"Enter Gate Number: ";
-    cin>>gateNumber;
-    
+    cout << "Enter Gate Number: ";
+    cin >> gateNumber;
+
     // insert data into the database
-    SACommand cmd(&connection);
+    SACommand cmd(conn);
     cmd.setCommandText("INSERT INTO Gate (gateID, gateNumber) VALUES (:1, :2)");
-    cmd << gateID<< gateNumber;
-    cmd.Execute();
+    cmd << gateId << gateNumber;
 
-    cout << "Gate added successfully. ID: " << gateId << endl;
+    try {
+        cmd.Execute();
+        cout << "Gate added successfully. ID: " << gateId << endl;
+    } catch (SAException& ex) {
+        cerr << "Error: " << ex.ErrText().GetMultiByteChars() << endl;
+    }
 }
 
-}
-
-
-
-void Gate::deleteGate(SAConnection* conn)
-{
-    int deleteGateid;
+void Gate::deleteGate(SAConnection* conn) {
+    int deleteGateId;
     cout << "Enter Id of the Gate you want to delete: ";
-    cin >> deleteTerminalid;
-    
-    // delete data from databse
-    SACommand cmd(&connection);
-    cmd.setCommandText("DELETE FROM Gate WHERE gateId = :1");
-    cmd << deleteGateid;
-    
-    // checks if data to be deleted is present in the database then delete else produce error message
-    if (cmd.Execute() > 0) {
-        cout << "Gate deleted successfully." << endl;
-    }
-    else {
-        cout << "Gate not found." << endl;
+    cin >> deleteGateId;
+
+    // delete data from database
+    SACommand cmd(conn);
+    cmd.setCommandText("DELETE FROM Gate WHERE gateID = :1");
+    cmd << deleteGateId;
+
+    try {
+        if (cmd.Execute() > 0) {
+            cout << "Gate deleted successfully." << endl;
+        } else {
+            cout << "Gate not found." << endl;
+        }
+    } catch (SAException& ex) {
+        cerr << "Error: " << ex.ErrText().GetMultiByteChars() << endl;
     }
 }
-void Gate::menu(SAConnection* conn){
+
+void Gate::menu(SAConnection* conn) {
     int choice;
-    while (true)
-    {
-        cout<<"What do you want to do?\n";
-        cout<<"\n Menu: \n 1. Add Gate: \n 2. Delete Gate\n 3. Exit\n";
+    while (true) {
+        cout << "What do you want to do?\n";
+        cout << "\n Menu: \n 1. Add Gate \n 2. Delete Gate\n 3. Exit\n";
         cin >> choice;
-        if(choice == 1){
+        if (choice == 1) {
             addGate(conn);
-        }
-        else if(choice == 2){
+        } else if (choice == 2) {
             deleteGate(conn);
-        }
-        else{
-            cout << "Invalid choice. Please enter a valid option.\n"
+        } else if (choice == 3) {
+            cout << "Exiting Program.\n";
+            break;  // Exit the loop and end the program
+        } else {
+            cout << "Invalid choice. Please enter a valid option.\n";
         }
     }
 }
-void Gate::printGateDetails() const {
+
+void Gate::printGateDetails(SAConnection* conn) const {
     // Fetch data from the database
-    SACommand cmd(&connection);
+    SACommand cmd(conn);
     cmd.setCommandText("SELECT * FROM Gate WHERE gateID = :1");
     cmd << gateId;
-    cmd.Execute();
 
-    // Check if data is fetched successfully
-    if (cmd.FetchNext()) {
-        cout << "Gate ID: " << cmd.Field("gateID").asLong() << endl;
-        cout << "Gate Number: " << cmd.Field("gateNumber").asString() << endl;
-        // Add additional details as needed
-    } 
-    else {
-        cout << "Gate not found in the database." << endl;
+    try {
+        cmd.Execute();
+
+        if (cmd.FetchNext()) {
+            cout << "Gate ID: " << cmd.Field("gateID").asLong() << endl;
+            cout << "Gate Number: " << cmd.Field("gateNumber").asString() << endl;
+            // Add additional details as needed
+        } else {
+            cout << "Gate not found in the database." << endl;
+        }
+    } catch (SAException& ex) {
+        cerr << "Error: " << ex.ErrText().GetMultiByteChars() << endl;
     }
 }

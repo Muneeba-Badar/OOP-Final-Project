@@ -16,9 +16,9 @@ class Airline
         std::string HQcountry;
         SAConnection* connection; // Pointer to the database connection
     public:
-        int generateId();
+        int generateAirlineId();
         void addAirline(SAConnection* conn);
-        void printAirlineDetails()
+        void printAirlineDetails(SAConnection* conn);
         void setConnection(SAConnection* conn);
         void menu(SAConnection* conn);
 };

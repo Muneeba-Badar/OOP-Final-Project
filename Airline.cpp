@@ -8,14 +8,14 @@ int Airline::autoIncAirlineId = 0;
 
 int Airline:: generateAirlineId()
     {
-        return autoIncAirlineId;
+        return autoIncAirlineId++;
     }
 
 void Airline::setConnection(SAConnection* conn){
     connection = conn;
 }
 void Airline::addAirline(SAConnection* conn){
-    airlineID = generateAirlineID();
+    airlineID = generateAirlineId();
 
     cout<<"Enter the Airline Name: ";
     cin>> airlineName;
@@ -74,7 +74,7 @@ void Airline::menu(SAConnection* conn){
             deleteAirline(conn);
         }
         else{
-            cout << "Invalid choice. Please enter a valid option.\n"
+            cout << "Invalid choice. Please enter a valid option.\n";
         }
     }
 }

@@ -16,5 +16,7 @@ class Terminal{
         int generateTerminalId();
         void setConnection(SAConnection* conn);
         void menu(SAConnection* conn);
-        void printTerminalDetails();
+        void printTerminalDetails(SAConnection* conn);
+        void handleDatabaseException(const SAException& ex); //exception handling for errors
 };
+

@@ -11,9 +11,13 @@ int Pilot:: generateID()
         return pilotID++;
     }
 
+void Pilot::setConnection(SAConnection* conn) {
+    connection = conn;
+}
 
-void Pilot::addPilot(std::map<int, Pilot> &pilotMapping)
+void Pilot::addPilot(SAConnection* conn)
 {
+
     pilotID = generateID();
     cout << "Enter pilot name: ";    
     cin >> pilotName;
@@ -25,101 +29,173 @@ void Pilot::addPilot(std::map<int, Pilot> &pilotMapping)
     cin >> email;
     cout << "Enter the Address: ";
     cin >> address;
-
-    // Add the Pilot to the map
-    pilotMapping[pilotID] = *this;
+    SACommand cmd(conn);
+    cmd.setCommandText("Insert into Pilot (pilotID,pilotName,liscenceNo,phoneNumber,email,address): VALUES(:1,:2,:3,:4,:5,:6)");
+    cmd.Execute();
 
     cout << "Pilot added successfully. ID: " << pilotID << endl;
 }
 
-void Pilot::editPilot(std::map<int, Pilot> &pilotMapping)
-{
-    int lineToEdit;
+void Pilot::editPilot(SAConnection* conn) {
+    setConnection(conn);
+
+    int pilotIdToEdit;
     cout << "Enter the Pilot ID to edit: ";
-    cin >> lineToEdit;
+    cin >> pilotIdToEdit;
 
-    // Iterate over the map
-    std::map<int, Pilot>::iterator it = pilotMapping.find(lineToEdit);
-    if (it != pilotMapping.end())
-    {
-        // The pilot with the specified ID was found
+    SACommand cmd(connection);
+    cmd.setCommandText("SELECT * FROM Pilots WHERE PilotID = :1");
+    cmd.Param(1).setAsLong() = pilotIdToEdit;
 
-        // Access the pilot object using it->second
-        Pilot &pilotToEdit = it->second;
+    try {
+        cmd.Execute();
 
-        // Now you can edit the details of the pilot
-        cout << "Editing details for pilot with ID " << pilotToEdit.pilotID << endl;
+        if (cmd.FetchNext()) {
+            // Pilot found, allow editing
+            cout << "Editing details for pilot with ID " << pilotIdToEdit << endl;
 
-        
-        cout << "Existing Details:" << endl;
-        cout << "1. Phone Number: " << pilotToEdit.phoneNumber << endl;
-        cout << "2. Email: " << pilotToEdit.email << endl;
-        cout << "3. Address: " << pilotToEdit.address << endl;
+            cout << "Existing Details:" << endl;
+            cout << "1. Name: " <<cmd.Field("PilotName").asString() << endl;
+            cout << "2. Liscence Number: " << cmd.Field("LiscenceNo").asLong() << endl;
+            cout << "3. Phone Number: "<<cmd.Field("PhoneNumber").asString() << endl;
+            cout << "4. Email: " << cmd.Field("Email").asString() << endl;
+            cout << "5. Address: " << cmd.Field("Address").asString() << endl;
 
-        // Prompt user for the field to edit
-        int choice;
-        cout << "Enter the number of the field to edit (or 0 to exit): ";
-        cin >> choice;
+            // Prompt user for the field to edit
+            int choice;
+            cout << "Enter the number of the field to edit (or 0 to exit): ";
+            cin >> choice;
 
-        switch (choice)
-        {
-        case 1:
-            cout << "Enter new phone number: ";
-            cin >> pilotToEdit.pilotName;
-            break;
-        case 2:
-            cout << "Enter new email: ";
-            cin >> pilotToEdit.email;
-            break;
-        case 3:
-            cout << "Enter new address: ";
-            cin >> pilotToEdit.address;
-            break;
-        case 0:
-            cout << "Exiting edit mode." << endl;
-            break;
-        default:
-            cout << "Invalid choice." << endl;
-            break;
+            switch (choice) {
+                case 1:
+                    cout << "Enter new name: ";
+                    cin >> cmd.Field("PilotName").asString();
+                    break;
+                case 2:
+                    cout << "Enter new liscence number: ";
+                    cin >> cmd.Field("LiscenceNo").asLong();
+                    break;
+                case 3:
+                    cout << "Enter new phone number: ";
+                    cin >> cmd.Field("PhoneNumber").asString();
+                    break;
+                case 4:
+                    cout << "Enter new email: ";
+                    cin >> cmd.Field("Email").asString();
+                    break;
+                case 5:
+                    cout << "Enter new address: ";
+                    cin >> cmd.Field("Address").asString();
+                    break;
+                case 0:
+                    cout << "Exiting edit mode." << endl;
+                    break;
+                default:
+                    cout << "Invalid choice." << endl;
+                    break;
+            }
+
+            // Update the pilot in the database
+            cmd.setCommandText("UPDATE Pilots SET PilotName=:1, LiscenceNo=:2, PhoneNumber=:3, Email=:4, Address=:5 WHERE PilotID=:6");
+            cmd.Param(6).setAsLong() = pilotIdToEdit;
+
+            try {
+                cmd.Execute();
+                cout << "Pilot edited successfully." << endl;
+            } catch (SAException& ex) {
+                cout << "Error updating pilot: " << ex.ErrText().GetMultiByteChars() << endl;
+            }
+
+        } else {
+            cout << "Pilot not found." << endl;
         }
 
-        cout << "Pilot edited successfully." << endl;
-    }
-    else
-    {
-        // The pilot with the specified ID was not found
-        cout << "Pilot not found." << endl;
-    }
-}
-void Pilot::printAllPilots(std::map<int, Pilot> &pilotMapping)
-{
-    cout << "\nAll Pilots:\n";
-    for (const auto &entry : pilotMapping)
-    {
-        const Pilot &pilot = entry.second;
-        cout << "Pilot ID: " << pilot.pilotID << "\n"
-             << "Name: " << pilot.pilotName << "\n"
-             << "Liscence Number: " << pilot.liscenceNo << "\n"
-             << "Email: " << pilot.email << "\n"
-             << "Address: " << pilot.address << "\n"
-             << "Phone Number: " << pilot.phoneNumber << "\n\n";
+    } catch (SAException& ex) {
+        cout << "Error fetching pilot details: " << ex.ErrText().GetMultiByteChars() << endl;
     }
 }
 
-void Pilot::deletePilot(std::map<int, Pilot> &pilotMapping)
-{
-    int pilotIDToDelete;
-    cout << "Enter the Pilot ID to delete: ";
-    cin >> pilotIDToDelete;
+void Pilot::deletePilot(SAConnection* conn) {
+    try {
+        int pilotIDToDelete;
+        cout << "Enter the Pilot ID to delete: ";
+        cin >> pilotIDToDelete;
 
-    auto it = pilotMapping.find(pilotIDToDelete);
-    if (it != pilotMapping.end())
-    {
-        pilotMapping.erase(it);
-        cout << "pilot deleted successfully." << endl;
+        SACommand cmd(conn);
+        cmd.setCommandText("DELETE FROM Pilot WHERE pilotID = :1");
+        cmd << static_cast<long>( pilotIDToDelete);
+
+        if ( cmd.RowsAffected() > 0) {
+            cout << "Pilot deleted successfully." << endl;
+        } else {
+            cout << "Pilot not found." << endl;
+        } //check if there is change in the rows, if yes then we would know that the pilot is deleted
     }
-    else
-    {
-        cout << "pilot not found." << endl;
+
+void Pilot::menu(SAConnection* conn) {
+    int choice;
+
+    while (true) {
+        // Display menu
+        cout << "===== Pilot Management System =====" << endl;
+        cout << "1. Add Pilot" << endl;
+        cout << "2. Edit Pilot" << endl;
+        cout << "3. Print All Pilots" << endl;
+        cout << "4. Delete Pilot" << endl;
+        cout << "5. Return to Airline Management" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                addPilot(conn);
+                break;
+            case 2:
+                editPilot(conn);
+                break;
+            case 3:
+                printAllPilots(conn);
+                break;
+            case 4:
+                deletePilot(conn);
+                break;
+            case 5:
+                cout << "Returning to Airline Management." << endl;
+                return;  // Return from the menu to the higher-level menu or class
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
     }
 }
+
+void Pilot::printAllPilots(SAConnection* conn) {
+    setConnection(conn);
+
+    SACommand cmd(connection);
+    cmd.setCommandText("SELECT * FROM Pilots");
+
+    try {
+        cmd.Execute();
+
+        while (cmd.FetchNext()) {
+            int id = cmd.Field("PilotID").asLong();
+            string name = cmd.Field("PilotName").asString();
+            int licenseNo = cmd.Field("LiscenceNo").asLong();
+            string phoneNumber = cmd.Field("PhoneNumber").asString();
+            string email = cmd.Field("Email").asString();
+            string address = cmd.Field("Address").asString();
+
+            // Print the retrieved information
+            cout << "Pilot ID: " << id << ", Name: " << name << ", License Number: " << licenseNo << ", Phone: " << phoneNumber
+                 << ", Email: " << email << ", Address: " << address << endl;
+        }
+    } catch (SAException& ex) {
+        cout << "Error: " << ex.ErrText().GetMultiByteChars() << endl;
+    }
+}
+
+std::ostream& operator<<(std::ostream& os, const SAString& saString) {
+    os << static_cast<const char*>(saString);
+    return os;
+}
+

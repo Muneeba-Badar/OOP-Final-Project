@@ -131,132 +131,130 @@ int main() {
     //             termialObj.deleteTerminal(Terminalmapping);
     //         }
     // }
-    if(ChooseTable==4){
-    std::map<int, flight> flightmapping;
+    // if(ChooseTable==4){
+    // std::map<int, flight> flightmapping;
 
-    flight flight1;
+    // flight flight1;
 
-    int choice;
-    while (choice != 3)
-    {
-        std::cout << "\nMenu:\n1. Add Flight\n2. Delete Flight\n3. Edit Flight\n Exit\n";
-        std::cout << "Enter your choice: ";
-        std::cin >> choice;
+    // int choice;
+    // while (choice != 3)
+    // {
+    //     std::cout << "\nMenu:\n1. Add Flight\n2. Delete Flight\n3. Edit Flight\n Exit\n";
+    //     std::cout << "Enter your choice: ";
+    //     std::cin >> choice;
 
-        switch (choice) {
-        case 1:
-            flight1.addFlight(flightmapping);
-            break;
-        case 2:
-            flight1.deleteFlight(flightmapping);
-            break;
-        case 3:
-            std::cout << "Exiting program." << std::endl;
-            break;
+    //     switch (choice) {
+    //     case 1:
+    //         flight1.addFlight(flightmapping);
+    //         break;
+    //     case 2:
+    //         flight1.deleteFlight(flightmapping);
+    //         break;
+    //     case 3:
+    //         std::cout << "Exiting program." << std::endl;
+    //         break;
 
-        default:
-            std::cout << "Invalid choice. Please enter a valid option." << std::endl;
-            break;
-        }
-    }
-    }
-    if(ChooseTable==5){
+    //     default:
+    //         std::cout << "Invalid choice. Please enter a valid option." << std::endl;
+    //         break;
+    //     }
+    // }
+    // }
+    // if(ChooseTable==5){
     
-    std::map<int, Airline> airlineMapping;
-    Airline a1;
+    // std::map<int, Airline> airlineMapping;
+    // Airline a1;
 
-    int choice;
-    do
-    {
-        cout << "\nMenu:\n1. Add Airline\n2. Edit Airline\n3. Print all the added airlines: \n4. Exit\n";
-        cout << "Enter your choice: ";
-        cin >> choice;
+    // int choice;
+    // do
+    // {
+    //     cout << "\nMenu:\n1. Add Airline\n2. Edit Airline\n3. Print all the added airlines: \n4. Exit\n";
+    //     cout << "Enter your choice: ";
+    //     cin >> choice;
 
-        switch (choice)
-        {
-        case 1:
-            a1.addAirline(airlineMapping);
-            break;
-        case 2:
-            a1.printAllAirlines(airlineMapping);
-            break;
-        case 3:
-            cout << "Exiting program." << endl;
-            break;
-        default:
-            cout << "Invalid choice. Please enter a valid option." << endl;
-            break;
-        }
+    //     switch (choice)
+    //     {
+    //     case 1:
+    //         a1.addAirline(airlineMapping);
+    //         break;
+    //     case 2:
+    //         a1.printAllAirlines(airlineMapping);
+    //         break;
+    //     case 3:
+    //         cout << "Exiting program." << endl;
+    //         break;
+    //     default:
+    //         cout << "Invalid choice. Please enter a valid option." << endl;
+    //         break;
+    //     }
 
-    } while (choice != 3);
-    }
+    // } while (choice != 3);
+    // }
 
-    if(ChooseTable==6){
+    // if(ChooseTable==6){
     
-    std::map<int, Pilot> pilotMapping;
-    Pilot p1;
+    // std::map<int, Pilot> pilotMapping;
+    // Pilot p1;
 
-    int choice;
-    do
-    {
-        cout << "\nMenu:\n1. Add Pilot\n2. Edit Pilot\n3. Print all the added Pilots: \n1 4-Exit\n";
-        cout << "Enter your choice: ";
-        cin >> choice;
+    // int choice;
+    // do
+    // {
+    //     cout << "\nMenu:\n1. Add Pilot\n2. Edit Pilot\n3. Print all the added Pilots: \n1 4-Exit\n";
+    //     cout << "Enter your choice: ";
+    //     cin >> choice;
 
-        switch (choice)
-        {
-        case 1:
-            p1.addPilot(pilotMapping);
-            break;
-        case 2:
-            p1.printAllPilots(pilotMapping);
-            break;
-        case 3:
-            cout << "Exiting program." << endl;
-            break;
-        default:
-            cout << "Invalid choice. Please enter a valid option." << endl;
-            break;
-        }
+    //     switch (choice)
+    //     {
+    //     case 1:
+    //         p1.addPilot(pilotMapping);
+    //         break;
+    //     case 2:
+    //         p1.printAllPilots(pilotMapping);
+    //         break;
+    //     case 3:
+    //         cout << "Exiting program." << endl;
+    //         break;
+    //     default:
+    //         cout << "Invalid choice. Please enter a valid option." << endl;
+    //         break;
+    //     }
 
-    } while (choice != 3);
-    }
+    // } while (choice != 3);
+    // }
 
-    if(ChooseTable==7){
+    // if(ChooseTable==7){
     
-    std::map<int, Gate> gateMapping;
-    Gate g1;
+    // std::map<int, Gate> gateMapping;
+    // Gate g1;
 
-    int choice;
-    do
-    {
-        cout << "\nMenu:\n1. Add Gate\n2. Edit Gate\n3. Print all the added Gates: \n1 4-Exit\n";
-        cout << "Enter your choice: ";
-        cin >> choice;
+    // int choice;
+    // do
+    // {
+    //     cout << "\nMenu:\n1. Add Gate\n2. Edit Gate\n3. Print all the added Gates: \n1 4-Exit\n";
+    //     cout << "Enter your choice: ";
+    //     cin >> choice;
 
-        switch (choice)
-        {
-        case 1:
-            g1.addGate(gateMapping);
-            break;
-        case 2:
-            g1.printAllGates(gateMapping);
-            break;
-        case 3:
-            cout << "Exiting program." << endl;
-            break;
-        default:
-            cout << "Invalid choice. Please enter a valid option." << endl;
-            break;
-        }
+    //     switch (choice)
+    //     {
+    //     case 1:
+    //         g1.addGate(gateMapping);
+    //         break;
+    //     case 2:
+    //         g1.printAllGates(gateMapping);
+    //         break;
+    //     case 3:
+    //         cout << "Exiting program." << endl;
+    //         break;
+    //     default:
+    //         cout << "Invalid choice. Please enter a valid option." << endl;
+    //         break;
+    //     }
 
-    } while (choice != 3);
-    }
+    // } while (choice != 3);
+    // }
 
      // Disconnect from the database
     connection.Disconnect();
      return 0;
 }
    
-
-
