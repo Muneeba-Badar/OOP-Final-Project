@@ -6,4 +6,6 @@ class AircraftManager{
         string name;
         string username;
         string password;
+        virtual void menu(SAConnection* conn);
+
 };
